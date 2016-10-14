@@ -1,3 +1,4 @@
-from django.shortcuts import render
+from util import json_response
 
-# Create your views here.
+def home_view(request):
+    return json_response("test")
