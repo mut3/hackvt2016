@@ -74,7 +74,7 @@ class SchoolDistrict:
     def totalRev(self):
         return self.stateRev + self.federalRev + self.localRev
 
-    def __init__(self, leaid, name, localRev, stateRev, federalRev, pop, collegeEnrollRate, satMean, testTakers):
+    def __init__(self, leaid, name, localRev, stateRev, federalRev, pop, collegeEnrollRate, satMean):
         self.leaid = leaid
 
         self.name = name
@@ -88,7 +88,6 @@ class SchoolDistrict:
         self.collegeEnrollRate = collegeEnrollRate
 
         self.satMean = satMean
-        self.testTakers = testTakers
 
     def getPerformanceMetric(self):
         satWeight = 0.5
@@ -120,13 +119,13 @@ class SchoolDistrict:
             testTakers = row['Test Takers']
 
             reading = row['Critical Reading Mean']
-            reading = reading if reading != None else 0
+            reading = int(reading) if reading != None else 0
 
             math = row['Math Mean']
-            math = math if math != None else 0
+            math = int(math) if math != None else 0
 
             writing = row['Writing Mean']
-            writing = writing if writing != None else 0
+            writing = int(writing) if writing != None else 0
 
             satMean = reading + math + writing
 
@@ -158,10 +157,11 @@ class SchoolDistrict:
             collegeEnrollRate = 0 if collegeEnrollRate == "++" else collegeEnrollRate
             collegeEnrollRate = float(collegeEnrollRate) / 100
 
-            testTakers = int(district['testTakers'])
-            satMean = int(district['satMean'])
+            satMean = int(district['satMean']) if 'satMean' in district else 0
+            print (satMean)
 
-            result.append(SchoolDistrict(leaid, name, localRev, stateRev, fedRev, pop, collegeEnrollRate, satMean, testTakers))
+
+            result.append(SchoolDistrict(leaid, name, localRev, stateRev, fedRev, pop, collegeEnrollRate, satMean))
 
 
         return result
