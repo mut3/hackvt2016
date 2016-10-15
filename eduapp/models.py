@@ -74,7 +74,7 @@ class SchoolDistrict:
     def totalRev(self):
         return self.stateRev + self.federalRev + self.localRev
 
-    def __init__(self, leaid, name, localRev, stateRev, federalRev, pop, collegeEnrollRate, satMean):
+    def __init__(self, leaid, name, localRev, stateRev, federalRev, pop, collegeEnrollRate, satMean, testTakers):
         self.leaid = leaid
 
         self.name = name
@@ -88,6 +88,7 @@ class SchoolDistrict:
         self.collegeEnrollRate = collegeEnrollRate
 
         self.satMean = satMean
+        self.testTakers = testTakers
 
     def getPerformanceMetric(self):
         satWeight = 0.5
