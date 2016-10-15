@@ -3,6 +3,7 @@ from util import get_training
 from util import get_model
 from util import x_value_factor
 from models import SchoolDistrict
+import json
 
 alldistricts = SchoolDistrict.getAll()
 
@@ -17,3 +18,13 @@ def home_view(request):
 
 def calculate_view(request, x):
     return json_response(model.calculate(float(x) * x_value_factor))
+
+def batch_calculate_view(request):
+    data = json.loads(request.read())
+
+    response = {}
+
+    for name, x in data.iteritems():
+        response[name] = model.calculate(float(x) * x_value_factor)
+
+    return json_response(response)
