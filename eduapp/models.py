@@ -7,6 +7,7 @@ import json
 
 sdf13_url = "http://ec2-54-167-155-28.compute-1.amazonaws.com:9200/_all/sdf13/_search?size=1000&q=*:*"
 enroll_url = "http://ec2-54-167-155-28.compute-1.amazonaws.com:9200/_all/enroll-fix/_search?size=1000&q=*:*"
+sat_url = "http://ec2-54-167-155-28.compute-1.amazonaws.com:9200/_all/sat/_search?size=1000&q=*:*"
 
 name_maps = {
     "ARLINGTON MEMORIAL HIGH SCHOOL": "ARLINGTON SCHOOL DISTRICT",
@@ -105,10 +106,12 @@ class SchoolDistrict:
 
         enroll_raw = [h['_source'] for h in json.loads(urlopen(enroll_url).read())['hits']['hits']]
 
-        mapped = {}
+        sat_raw = [h['_source'] for h in json.loads(urlopen(sat_url).read())['hits']['hits']]
+
+        district_map = {}
 
         for row in sdf13_raw:
-            mapped[row['NAME']] = row
+            district_map[row['NAME']] = row
 
         result = []
 
@@ -118,24 +121,26 @@ class SchoolDistrict:
             if name in skip_set:
                 continue
 
-            r = mapped[name]
+            district = district_map[name]
 
-            leaid = int(r['LEAID'])
+            leaid = int(district['LEAID'])
 
-            name = r['NAME']
+            name = district['NAME']
 
-            localRev = int(r['TLOCREV'])
-            stateRev = int(r['TSTREV'])
-            fedRev = int(r['TFEDREV'])
+            localRev = int(district['TLOCREV'])
+            stateRev = int(district['TSTREV'])
+            fedRev = int(district['TFEDREV'])
 
-            pop = int(r['MEMBERSCH'])
+            pop = int(district['MEMBERSCH'])
 
             collegeEnrollRate = row['Postseconary Enrollment Rate'].strip("%")
             collegeEnrollRate = 0 if collegeEnrollRate == "++" else collegeEnrollRate
             collegeEnrollRate = float(collegeEnrollRate) / 100
 
+            sat_scores = sat_raw
             satMean = 0 # TODO
 
             result.append(SchoolDistrict(leaid, name, localRev, stateRev, fedRev, pop, collegeEnrollRate, satMean))
+
 
         return result
