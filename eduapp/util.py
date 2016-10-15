@@ -22,6 +22,12 @@ def get_training(data):
 def json_response(data):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
+class MachineLearningModel:
+    def __init__(self, W, b):
+        self.W = W
+        self.b = b
+    def calculate(self, x):
+        return x * self.W + self.b
 
 def get_model(training_x, training_y):
     X = tf.placeholder("float")
@@ -52,15 +58,12 @@ def get_model(training_x, training_y):
 
         if (epoch + 1) % display_step == 0:
             c = s.run(cost, feed_dict={X: training_x, Y:training_y})
-            print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(c), "W=", s.run(W), "b=", s.run(b))
+            print("Iteration:", '%04d' % (epoch+1), "Cost:", "{:.9f}".format(c), "m:", s.run(W), "b:", s.run(b))
 
 
     print("Optimization finished!")
     training_cost = s.run(cost, feed_dict={X: training_x, Y:training_y})
-    print("Training cost=", training_cost, "W=", s.run(W), "b=", s.run(b), '\n')
 
 
 
-    print (s.run(W))
-
-
+    return MachineLearningModel(s.run(W), s.run(b))
