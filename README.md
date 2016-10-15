@@ -1,2 +1,2 @@
-# hackvt2016
-team `sudo rm -rf /` building [app name here]
+# [App Name Here]
+## team `sudo rm -rf /`'s hackVT2016 project
