@@ -115,10 +115,24 @@ class SchoolDistrict:
             district_map[row['NAME']] = row
 
         for row in sat_raw:
+            if row['District'] in skip_set:
+                continue
             testTakers = row['Test Takers']
-            satMean = row['Critical Reading Mean'] + row['Math Mean'] + row['Writing Mean']
+
+            reading = row['Critical Reading Mean']
+            reading = reading if reading != None else 0
+
+            math = row['Math Mean']
+            math = math if math != None else 0
+
+            writing = row['Writing Mean']
+            writing = writing if writing != None else 0
+
+            satMean = reading + math + writing
+
             # since will rewrote thius data set we can be sure this aligns
-            district_map[row['District']].update('satMean'=satMean, 'testTakers'=testTakers)
+            mappy = {'satMean':satMean, 'testTakers':testTakers}
+            district_map[row['District']].update(mappy)
 
         result = []
 
