@@ -83,6 +83,17 @@ class SchoolDistrict:
 
         self.satMean = satMean
 
+    def getPerformanceMetric(self):
+        satWeight = 0.5
+        collegeEnrollRateWeight = 0.5
+
+        if self.satMean == 0:
+            satWeight = 0
+            collegeEnrollRateWeight = 1
+
+        return 100.0 * (self.satMean / 2400.0 * satWeight + self.collegeEnrollRate * collegeEnrollRateWeight)
+
+
     @staticmethod
     def getAll():
         sdf13_raw = [h['_source'] for h in json.loads(urlopen(sdf13_url).read())['hits']['hits']]
