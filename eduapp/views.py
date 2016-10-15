@@ -14,7 +14,12 @@ model = get_model(x,y)
 
 
 def home_view(request):
-    return json_response(model.calculate(20))
+    result = {}
+
+    for district in alldistricts:
+        result[district.name] = district.getPerformanceMetric()
+
+    return json_response(result)
 
 def calculate_view(request, x):
     return json_response(model.calculate(float(x) * x_value_factor))

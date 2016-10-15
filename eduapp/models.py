@@ -158,8 +158,6 @@ class SchoolDistrict:
             collegeEnrollRate = float(collegeEnrollRate) / 100
 
             satMean = int(district['satMean']) if 'satMean' in district else 0
-            print (satMean)
-
 
             result.append(SchoolDistrict(leaid, name, localRev, stateRev, fedRev, pop, collegeEnrollRate, satMean))
 
