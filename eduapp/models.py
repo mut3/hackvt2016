@@ -113,6 +113,12 @@ class SchoolDistrict:
         for row in sdf13_raw:
             district_map[row['NAME']] = row
 
+        for row in sat_raw:
+            testTakers = row['Test Takers']
+            satMean = row['Critical Reading Mean'] + row['Math Mean'] + row['Writing Mean']
+            # since will rewrote thius data set we can be sure this aligns
+            district_map[row['District']].update('satMean'=satMean, 'testTakers'=testTakers)
+
         result = []
 
         for row in enroll_raw:
@@ -137,10 +143,10 @@ class SchoolDistrict:
             collegeEnrollRate = 0 if collegeEnrollRate == "++" else collegeEnrollRate
             collegeEnrollRate = float(collegeEnrollRate) / 100
 
-            sat_scores = sat_raw
-            satMean = 0 # TODO
+            testTakers = int(district['testTakers'])
+            satMean = int(district['satMean'])
 
-            result.append(SchoolDistrict(leaid, name, localRev, stateRev, fedRev, pop, collegeEnrollRate, satMean))
+            result.append(SchoolDistrict(leaid, name, localRev, stateRev, fedRev, pop, collegeEnrollRate, satMean, testTakers))
 
 
         return result
