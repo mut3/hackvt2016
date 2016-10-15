@@ -19,5 +19,6 @@ import eduapp.views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', eduapp.views.home_view)
+    url(r'^$', eduapp.views.home_view),
+    url(r'calculate/(?P<x>\d+)$', eduapp.views.calculate_view)
 ]
